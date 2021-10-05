@@ -3,6 +3,10 @@ import { data } from '@ngrx-nx-workshop/data';
 import { createReducer, on } from '@ngrx/store';
 import * as apiActions from './actions';
 
+export interface GlobalState {
+  product: ProductState;
+}
+
 const initState: ProductState = {
   products: data
 };

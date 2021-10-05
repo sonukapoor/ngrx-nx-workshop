@@ -2,8 +2,10 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Rating } from '@ngrx-nx-workshop/api-interfaces';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
+import * as productDetailActions from './actions';
 
 import { CartService } from '../../cart/cart.service';
 import { ProductService } from '../product.service';
@@ -31,8 +33,8 @@ export class ProductDetailsComponent {
     private readonly router: ActivatedRoute,
     private readonly productService: ProductService,
     private readonly ratingService: RatingService,
-    private readonly cartService: CartService,
-    private readonly location: Location
+    private readonly location: Location,
+    private readonly store: Store
   ) {
     this.productId$
       .pipe(switchMap(id => this.ratingService.getRating(id)))
@@ -58,7 +60,7 @@ export class ProductDetailsComponent {
   }
 
   addToCart(productId: string) {
-    this.cartService.addProduct(productId);
+    this.store.dispatch(productDetailActions.addToCart({productId}))
   }
 
   back() {

@@ -9,6 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { productsReducer } from './product/reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools' ;
+import { EffectsModule } from '@ngrx/effects';
+import { ProductEffects } from './product/effects';
+import { CartModule } from './cart/cart.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,9 +19,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools' ;
     BrowserAnimationsModule,
     HttpClientModule,
     RoutingModule,
+    CartModule,
     CartIconModule,
     MatToolbarModule,
     StoreModule.forRoot({product: productsReducer}),
+    EffectsModule.forRoot([ProductEffects]),
     StoreDevtoolsModule.instrument({maxAge: 50})
   ],
   bootstrap: [AppComponent]
