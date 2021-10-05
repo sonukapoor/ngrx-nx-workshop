@@ -15,6 +15,7 @@ const initialState: CartState = {
 
  const cartReducer = createReducer(
   initialState,
+
   on(productDetailsActions.addToCart, (state, { productId }) => {
     const newQuantity =
       state.cartItems && state.cartItems[productId]
@@ -28,6 +29,7 @@ const initialState: CartState = {
       }
     };
   }),
+
   on(actions.fetchCartItemsSuccess, (state, { cartItems }) => ({
     ...state,
     cartItems: cartItems.reduce(
@@ -37,7 +39,21 @@ const initialState: CartState = {
       },
       {}
     )
-  }))
+  })),
+
+  on(actions.addToCartError, (state, { productId }) => {
+    const currentQuantity = state.cartItems && state.cartItems[productId];
+    const newCartItems = {...state.cartItems};
+    if (currentQuantity && currentQuantity > 1) {
+      newCartItems[productId] = currentQuantity - 1;
+    } else {
+      delete newCartItems[productId];
+    }
+    return {
+      ...state,
+      cartItems: newCartItems,
+    };
+  })
 );
 
 export function reducer(state: CartState | undefined, action: Action) {
